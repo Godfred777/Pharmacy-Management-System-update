@@ -149,7 +149,7 @@ public class DrugManager {
     /**
      * Fetches and displays the purchase history from the database in the specified text area.
      *
-     * Returns 2D string array
+     * @return 2D string array
      */
     public static String[][] viewPurchaseHistory() {
         String querySQL = "SELECT * FROM PurchaseHistory ORDER BY PurchaseDate";

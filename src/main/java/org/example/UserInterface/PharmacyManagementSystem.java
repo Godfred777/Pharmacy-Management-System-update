@@ -6,6 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * This project is authored by:
+ * Godfred Opintan - 10955081
+ * Danyal Hamza - 10944646
+ * Rayan Muktar - 10952895
+ * Hassan Umar - 10982248
+ * Akpose Vincent - 10986513
+ * Valentina Coleman - 10984819
+ * Samuel Tettey Kwabla - 10955435
  * PharmacyManagementSystem is a GUI application for managing pharmacy operations.
  * It provides options to add drugs, purchase drugs, search for drugs, view all drugs,
  * and view purchase history.
