@@ -1,5 +1,7 @@
 package org.example.UserInterface;
 
+import org.example.BackendLogic.DrugManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -60,25 +62,12 @@ public class ViewPurchaseHistoryFrame extends JFrame {
      * @param resultArea the text area to display the purchase history
      */
     private void viewPurchaseHistory(JTextArea resultArea) {
-        String querySQL = "SELECT * FROM PurchaseHistory ORDER BY PurchaseDate";
-
-        try (Connection conn = DriverManager.getConnection(jdbc_url,user,password);
-             PreparedStatement pstmt = conn.prepareStatement(querySQL);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            while (rs.next()) {
-                resultArea.append("PurchaseID: " + rs.getInt("PurchaseID") + "\n");
-                resultArea.append("DrugID: " + rs.getInt("DrugID") + "\n");
-                resultArea.append("PurchaseDate: " + rs.getTimestamp("PurchaseDate") + "\n");
-                resultArea.append("Quantity: " + rs.getInt("Quantity") + "\n");
-                resultArea.append("TotalAmount: " + rs.getDouble("TotalAmount") + "\n");
-                resultArea.append("BuyerName: " + rs.getString("BuyerName") + "\n");
-                resultArea.append("-----------------------\n");
+        final String[][] drugArray = DrugManager.viewAllDrugs();
+        for (String[] row : drugArray) {
+            for (String col : row) {
+                resultArea.append(col + "\t"); // Display each column separated by tab for clarity
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error viewing purchase history!");
+            resultArea.append("\n"); // Move to the next line after displaying all columns of a row
         }
     }
 }

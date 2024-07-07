@@ -145,4 +145,39 @@ public class DrugManager {
 
         return dataArray;
     }
+
+    /**
+     * Fetches and displays the purchase history from the database in the specified text area.
+     *
+     * Returns 2D string array
+     */
+    public static String[][] viewPurchaseHistory() {
+        String querySQL = "SELECT * FROM PurchaseHistory ORDER BY PurchaseDate";
+        ArrayList<String[]> dataList = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(jdbc_url,user,password);
+             PreparedStatement pstmt = conn.prepareStatement(querySQL);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                int columnCount = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    String[] row = new String[columnCount];
+                    for (int i = 0; i < columnCount; i++) {
+                        row[i] = rs.getString(i + 1);
+                    }
+                    dataList.add(row);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String[][] dataArray = new String[dataList.size()][];
+        dataArray = dataList.toArray(dataArray);
+
+        return dataArray;
+    }
 }
+
