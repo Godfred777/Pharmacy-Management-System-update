@@ -1,57 +1,63 @@
 package org.example.UserInterface;
-    import org.example.BackendLogic.DrugManager;
 
-    import javax.swing.*;
+import org.example.BackendLogic.DrugManager;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
-    public class ViewDrugsFrame extends JFrame {
-       // private static final String jdbc_url = "jdbc:mysql://localhost:3306/students";
-        //private static final String user = "root";
-        //private static final String password = "epiSode1";
-        public ViewDrugsFrame() {
-            setTitle("View All Drugs");
-            setSize(600, 400);
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            setLocationRelativeTo(null);
+/**
+ * Represents the frame for viewing all drugs in the pharmacy management system.
+ * Provides a user interface to display all drugs stored in the database.
+ */
+public class ViewDrugsFrame extends JFrame {
 
-            Container container = getContentPane();
-            container.setLayout(new BorderLayout());
+    /**
+     * Constructs a new ViewDrugsFrame.
+     * Sets up the frame's title, size, layout, and components for viewing all drugs.
+     */
+    public ViewDrugsFrame() {
+        setTitle("View All Drugs");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-            final JTextArea resultArea = new JTextArea();
-            resultArea.setEditable(false);
-            JScrollPane scrollPane = new JScrollPane(resultArea);
+        Container container = getContentPane();
+        container.setLayout(new BorderLayout());
 
-            JButton refreshButton = new JButton("Refresh");
+        final JTextArea resultArea = new JTextArea();
+        resultArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(resultArea);
 
-            container.add(refreshButton, BorderLayout.NORTH);
-            container.add(scrollPane, BorderLayout.CENTER);
+        JButton refreshButton = new JButton("Refresh");
 
-            refreshButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    resultArea.setText("");
-                    viewAllDrugs(resultArea);
-                }
-            });
+        container.add(refreshButton, BorderLayout.NORTH);
+        container.add(scrollPane, BorderLayout.CENTER);
 
-            setVisible(true);
-        }
-
-        private void viewAllDrugs(JTextArea resultArea) {
-            final String[][] drugArray = DrugManager.viewAllDrugs();
-            for (String[] row : drugArray) {
-                for (String col : row) {
-                    resultArea.append(col);
-                }
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resultArea.setText("");
+                viewAllDrugs(resultArea);
             }
-        }
+        });
+
+        setVisible(true);
     }
 
-
+    /**
+     * Fetches and displays all drugs from the database in the specified text area.
+     *
+     * @param resultArea the text area to display the list of drugs
+     */
+    private void viewAllDrugs(JTextArea resultArea) {
+        final String[][] drugArray = DrugManager.viewAllDrugs();
+        for (String[] row : drugArray) {
+            for (String col : row) {
+                resultArea.append(col + "\t"); // Display each column separated by tab for clarity
+            }
+            resultArea.append("\n"); // Move to the next line after displaying all columns of a row
+        }
+    }
+}

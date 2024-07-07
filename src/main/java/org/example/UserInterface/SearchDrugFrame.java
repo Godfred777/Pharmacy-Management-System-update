@@ -1,61 +1,69 @@
 package org.example.UserInterface;
-    import org.example.BackendLogic.DrugManager;
 
-    import javax.swing.*;
+import org.example.BackendLogic.DrugManager;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-    public class SearchDrugFrame extends JFrame {
-        /*
-        private static final String jdbc_url = "jdbc:mysql://localhost:3306/students";
-        private static final String user = "root";
-        private static final String password = "epiSode1";
-        */
-        public SearchDrugFrame() {
-            setTitle("Search Drug");
-            setSize(400, 300);
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            setLocationRelativeTo(null);
+/**
+ * Represents the frame for searching a drug in the pharmacy management system.
+ * Provides a user interface to enter a drug name and display search results.
+ */
+public class SearchDrugFrame extends JFrame {
 
-            Container container = getContentPane();
-            container.setLayout(new GridLayout(3, 2));
+    /**
+     * Constructs a new SearchDrugFrame.
+     * Sets up the frame's title, size, layout, and components for searching a drug by name.
+     */
+    public SearchDrugFrame() {
+        setTitle("Search Drug");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-            JLabel nameLabel = new JLabel("Drug Name:");
-            final JTextField nameField = new JTextField();
-            final JTextArea resultArea = new JTextArea();
-            resultArea.setEditable(false);
+        Container container = getContentPane();
+        container.setLayout(new GridLayout(3, 2));
 
-            JButton searchButton = new JButton("Search");
+        JLabel nameLabel = new JLabel("Drug Name:");
+        final JTextField nameField = new JTextField();
+        final JTextArea resultArea = new JTextArea();
+        resultArea.setEditable(false);
 
-            container.add(nameLabel);
-            container.add(nameField);
-            container.add(searchButton);
-            container.add(new JScrollPane(resultArea));
+        JButton searchButton = new JButton("Search");
 
-            searchButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String name = nameField.getText();
-                    resultArea.setText("");
-                    searchDrug(name, resultArea);
-                }
-            });
+        container.add(nameLabel);
+        container.add(nameField);
+        container.add(searchButton);
+        container.add(new JScrollPane(resultArea));
 
-            setVisible(true);
-        }
-
-        private void searchDrug(String name, JTextArea resultArea) {
-            String drugData[] = DrugManager.searchDrug(name);
-            for(String data : drugData) {
-                resultArea.append(data);
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText();
+                resultArea.setText("");
+                searchDrug(name, resultArea);
             }
-        }
+        });
+
+        setVisible(true);
     }
 
-
+    /**
+     * Searches for a drug by its name and displays the results in the specified text area.
+     *
+     * @param name       the name of the drug to search for
+     * @param resultArea the text area to display the search results
+     */
+    private void searchDrug(String name, JTextArea resultArea) {
+        String[] drugData = DrugManager.searchDrug(name);
+        if (drugData != null) {
+            for (String data : drugData) {
+                resultArea.append(data + "\n");
+            }
+        } else {
+            resultArea.append("No drug found with the name: " + name);
+        }
+    }
+}

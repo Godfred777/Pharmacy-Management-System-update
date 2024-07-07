@@ -1,6 +1,5 @@
 package org.example.UserInterface;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,61 +10,75 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-    public class ViewPurchaseHistoryFrame extends JFrame {
-        private static final String jdbc_url = "jdbc:mysql://localhost:3306/students";
-        private static final String user = "root";
-        private static final String password = "epiSode1";
-        public ViewPurchaseHistoryFrame() {
-            setTitle("View Purchase History");
-            setSize(600, 400);
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            setLocationRelativeTo(null);
+/**
+ * Represents the frame for viewing purchase history in the pharmacy management system.
+ * Provides a user interface to display a list of all purchases stored in the database.
+ */
+public class ViewPurchaseHistoryFrame extends JFrame {
 
-            Container container = getContentPane();
-            container.setLayout(new BorderLayout());
+    private static final String jdbc_url = "jdbc:mysql://localhost:3306/students";
+    private static final String user = "root";
+    private static final String password = "epiSode1";
 
-            final JTextArea resultArea = new JTextArea();
-            resultArea.setEditable(false);
-            JScrollPane scrollPane = new JScrollPane(resultArea);
+    /**
+     * Constructs a new ViewPurchaseHistoryFrame.
+     * Sets up the frame's title, size, layout, and components for viewing purchase history.
+     * Initializes a refresh button to update the displayed purchase history.
+     */
+    public ViewPurchaseHistoryFrame() {
+        setTitle("View Purchase History");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-            JButton refreshButton = new JButton("Refresh");
+        Container container = getContentPane();
+        container.setLayout(new BorderLayout());
 
-            container.add(refreshButton, BorderLayout.NORTH);
-            container.add(scrollPane, BorderLayout.CENTER);
+        final JTextArea resultArea = new JTextArea();
+        resultArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(resultArea);
 
-            refreshButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    resultArea.setText("");
-                    viewPurchaseHistory(resultArea);
-                }
-            });
+        JButton refreshButton = new JButton("Refresh");
 
-            setVisible(true);
-        }
+        container.add(refreshButton, BorderLayout.NORTH);
+        container.add(scrollPane, BorderLayout.CENTER);
 
-        private void viewPurchaseHistory(JTextArea resultArea) {
-            String querySQL = "SELECT * FROM PurchaseHistory ORDER BY PurchaseDate";
-
-            try (Connection conn = DriverManager.getConnection(jdbc_url,user,password);
-                 PreparedStatement pstmt = conn.prepareStatement(querySQL);
-                 ResultSet rs = pstmt.executeQuery()) {
-
-                while (rs.next()) {
-                    resultArea.append("PurchaseID: " + rs.getInt("PurchaseID") + "\n");
-                    resultArea.append("DrugID: " + rs.getInt("DrugID") + "\n");
-                    resultArea.append("PurchaseDate: " + rs.getTimestamp("PurchaseDate") + "\n");
-                    resultArea.append("Quantity: " + rs.getInt("Quantity") + "\n");
-                    resultArea.append("TotalAmount: " + rs.getDouble("TotalAmount") + "\n");
-                    resultArea.append("BuyerName: " + rs.getString("BuyerName") + "\n");
-                    resultArea.append("-----------------------\n");
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Error viewing purchase history!");
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resultArea.setText("");
+                viewPurchaseHistory(resultArea);
             }
-        }
+        });
+
+        setVisible(true);
     }
 
+    /**
+     * Fetches and displays the purchase history from the database in the specified text area.
+     *
+     * @param resultArea the text area to display the purchase history
+     */
+    private void viewPurchaseHistory(JTextArea resultArea) {
+        String querySQL = "SELECT * FROM PurchaseHistory ORDER BY PurchaseDate";
 
+        try (Connection conn = DriverManager.getConnection(jdbc_url,user,password);
+             PreparedStatement pstmt = conn.prepareStatement(querySQL);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                resultArea.append("PurchaseID: " + rs.getInt("PurchaseID") + "\n");
+                resultArea.append("DrugID: " + rs.getInt("DrugID") + "\n");
+                resultArea.append("PurchaseDate: " + rs.getTimestamp("PurchaseDate") + "\n");
+                resultArea.append("Quantity: " + rs.getInt("Quantity") + "\n");
+                resultArea.append("TotalAmount: " + rs.getDouble("TotalAmount") + "\n");
+                resultArea.append("BuyerName: " + rs.getString("BuyerName") + "\n");
+                resultArea.append("-----------------------\n");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error viewing purchase history!");
+        }
+    }
+}
