@@ -17,6 +17,10 @@ import java.awt.event.ActionListener;
  * PharmacyManagementSystem is a GUI application for managing pharmacy operations.
  * It provides options to add drugs, purchase drugs, search for drugs, view all drugs,
  * and view purchase history.
+ * <a href="https://lucid.app/lucidchart/a1618174-c698-46df-9a08-28c73c741ce4/edit?viewport_loc=-917%2C-411%2C3300%2C1440%2C0_0&invitationId=inv_1a4f15d7-416c-4124-8286-996a938ed16a">...</a>
+ * This is the link to the flowchart diagram
+ * https://drive.google.com/file/d/1vs_twcRDYhR41bK-LHjgzO1KbgVNQBVF/view?usp=sharing
+ * This is the video link
  */
 public class PharmacyManagementSystem extends JFrame {
 
